@@ -12,6 +12,10 @@ if __name__ == "__main__":
     print("Hello LangChain!")
 
     linkedin_profile_url = linkedin_lookup_agent(name="Cedric Ancellin")
+    linkedin_data = scrape_linkedin_profile(
+        linkedin_profile_url=linkedin_profile_url)
+
+    # you can add more tools here {linkedin_information} {twitter_information}
 
     summary_template = """
          given the Linkedin information {information} about a person from I want you to create:
@@ -19,6 +23,7 @@ if __name__ == "__main__":
          2. two interesting facts about them
      """
 
+    # add more input varibles to the array if needed  input_variables=["linkedin_information", "linkedin_twitter"]
     summary_prompt_template = PromptTemplate(
         input_variables=["information"], template=summary_template
     )
@@ -27,7 +32,5 @@ if __name__ == "__main__":
 
     chain = LLMChain(llm=llm, prompt=summary_prompt_template)
 
-    linkedin_data = scrape_linkedin_profile(
-        linkedin_profile_url=linkedin_profile_url)
-
+    # add more input variables here {"linkedin_information": linkedin_data, twitter_information: twitter_data}
     print(chain.invoke(input={"information": linkedin_data}))
